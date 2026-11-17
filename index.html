@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FisiQuest: O Vale da Física - RPG Educativo Full HD</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- ========================================================
+         TELA INICIAL: SELEÇÃO "QUAL TURMA VOCÊ É?" (TELA CHEIA)
+         ======================================================== -->
+    <div id="screenTurmaSelector" class="screen-selector">
+        <div class="title-card">
+            <h1 class="game-main-title">🌾 FISIQUEST: CIDADE DO SABER</h1>
+            <p class="game-sub-title">A física do dia a dia explicada de forma simples e divertida!</p>
+        </div>
+
+        <div class="selection-prompt">Qual turma você é?</div>
+
+        <div class="turmas-grid">
+            <!-- 1º ANO -->
+            <div class="turma-card" data-turma="ano1">
+                <div>
+                    <div class="turma-badge badge-1ano">1º ANO DO ENSINO MÉDIO</div>
+                    <h3>Trânsito, Batidas & Segurança</h3>
+                    <p class="turma-desc">
+                        Descubra por que o nosso corpo voa para a frente na freada brusca, teste o boneco no carro com e sem cinto, veja como o airbag amortece a pancada e crie o cartaz da campanha escolar!
+                    </p>
+                </div>
+                <div>
+                    <div class="turma-tags">
+                        <span class="tag-chip">Inércia & Cinto</span>
+                        <span class="tag-chip">Airbag Amortecedor</span>
+                        <span class="tag-chip">Campanha de Trânsito</span>
+                    </div>
+                    <button class="btn-retro success full-width btn-select-turma" data-turma="ano1">Entrar no 1º Ano ▶</button>
+                </div>
+            </div>
+
+            <!-- 2º ANO -->
+            <div class="turma-card" data-turma="ano2">
+                <div>
+                    <div class="turma-badge badge-2ano">2º ANO DO ENSINO MÉDIO</div>
+                    <h3>Calor nas Cidades & Casas Fresquinhas</h3>
+                    <p class="turma-desc">
+                        Veja por que o asfalto preto da rua parece um forno no sol, meça a temperatura com o termômetro, aprenda a isolar o teto usando caixas de leite vazias e ajude a vizinhança a economizar luz!
+                    </p>
+                </div>
+                <div>
+                    <div class="turma-tags">
+                        <span class="tag-chip">Raios de Sol & Asfalto</span>
+                        <span class="tag-chip">Forro com Caixa de Leite</span>
+                        <span class="tag-chip">Dicas para as Redes</span>
+                    </div>
+                    <button class="btn-retro success full-width btn-select-turma" data-turma="ano2">Entrar no 2º Ano ▶</button>
+                </div>
+            </div>
+
+            <!-- 3º ANO -->
+            <div class="turma-card" data-turma="ano3">
+                <div>
+                    <div class="turma-badge badge-3ano">3º ANO DO ENSINO MÉDIO</div>
+                    <h3>Celular, Wi-Fi, 5G & Podcast</h3>
+                    <p class="turma-desc">
+                        Desvende os mitos da internet sobre o 5G, entenda por que o Wi-Fi e o celular são 100% seguros, descubra por que a antena do celular é tão pequenininha e grave um podcast de sucesso!
+                    </p>
+                </div>
+                <div>
+                    <div class="turma-tags">
+                        <span class="tag-chip">Ondas Seguras</span>
+                        <span class="tag-chip">Tamanho da Antena</span>
+                        <span class="tag-chip">Gravação do Podcast</span>
+                    </div>
+                    <button class="btn-retro success full-width btn-select-turma" data-turma="ano3">Entrar no 3º Ano ▶</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================
+         TELA PRINCIPAL DO JOGO (FULL HD 1080p TELA CHEIA)
+         ======================================================== -->
+    <div id="screenGame" class="screen-game">
+        <!-- HUD Superior Flutuante Estilo Madeira Stardew -->
+        <div class="rpg-hud">
+            <div class="hud-left">
+                <span class="hud-turma-badge" id="hudTurmaBadge">1º ANO</span>
+                <span class="hud-cenario" id="hudCenarioNome">📍 Distrito Central</span>
+            </div>
+            <div class="hud-right">
+                <button class="btn-retro sm" id="btnToggleFullscreen">⛶ Tela Cheia</button>
+                <button class="btn-retro sm" id="btnToggleBgm">🎵 Música: Ligada</button>
+                <button class="btn-retro sm" id="btnOpenVocabulario">📚 Vocabulário Físico</button>
+                <button class="btn-retro sm" id="btnOpenCaderno">📖 Diário da Turma</button>
+                <button class="btn-retro sm" id="btnOpenSettings">⚙️ Opções do Professor</button>
+                <button class="btn-retro sm danger" onclick="window.uiManager.returnToClassSelection()">🔄 Trocar Turma</button>
+            </div>
+        </div>
+
+        <!-- Pergaminho Pinned com Objetivo da Vez -->
+        <div class="hud-pergaminho" id="hudPergaminho" title="Clique para abrir a atividade ativa">
+            <div class="hud-icon-box" id="hudMissaoIcon">🚗</div>
+            <div class="hud-info-box">
+                <h4 id="hudMissaoTitulo">Carregando missão...</h4>
+                <p id="hudMissaoResumo">Explore o mapa e dirija-se até o ponto brilhante.</p>
+            </div>
+        </div>
+
+        <!-- Canvas Nativo Full HD (1920x1080) -->
+        <div class="canvas-wrapper">
+            <canvas id="rpgCanvas" width="1920" height="1080"></canvas>
+        </div>
+
+        <!-- Barra Inferior de Atalhos -->
+        <div class="rpg-footer-bar">
+            <div class="footer-keys">
+                Controles: <span>W</span><span>A</span><span>S</span><span>D</span> ou <span>Setas</span> para andar | <span>Espaço</span> ou <span>E</span> para conversar | <span>Clique</span> na tela para caminhar | Tecla <span>F</span> para Tela Cheia
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================
+         MODAL INTERATIVO DE ATIVIDADE & DEMONSTRAÇÃO
+         ======================================================== -->
+    <div id="modalMission" class="modal-overlay">
+        <div class="modal-content-box">
+            <button class="btn-close-modal">✖</button>
+            <div id="modalMissionContent">
+                <!-- Conteúdo dinâmico com linguagem simples e gráficos -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================
+         MODAL DIÁRIO DE CONQUISTAS
+         ======================================================== -->
+    <div id="modalCaderno" class="modal-overlay">
+        <div class="modal-content-box">
+            <button class="btn-close-modal">✖</button>
+            <div id="cadernoContent">
+                <!-- Fases concluídas e conceitos explicados de forma fácil -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================
+         MODAL VOCABULÁRIO FÍSICO / LETRAMENTO CIENTÍFICO
+         ======================================================== -->
+    <div id="modalVocabulario" class="modal-overlay">
+        <div class="modal-content-box" style="max-width: 980px; max-height: 88vh;">
+            <button class="btn-close-modal">✖</button>
+            <div id="vocabularioContent">
+                <!-- Glossário e Letramento Interativo -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================
+         MODAL DO PROFESSOR (SALTO DE FASES)
+         ======================================================== -->
+    <div id="modalSettings" class="modal-overlay">
+        <div class="modal-content-box" style="max-width: 550px;">
+            <button class="btn-close-modal">✖</button>
+            <h2 style="font-family: var(--font-pixel); font-size: 15px; margin-bottom: 12px; color: var(--stardew-wood-dark);">⚙️ Menu de Apoio ao Professor</h2>
+            <p style="font-size: 14px; margin-bottom: 16px; color: #334155;">
+                Clique em qualquer fase abaixo para pular diretamente para a demonstração ou exercício desejado durante a aula:
+            </p>
+            <div id="settingsJumpList"></div>
+        </div>
+    </div>
+
+    <!-- ========================================================
+         TELA DE VITÓRIA / CONCLUSÃO DO BIMESTRE
+         ======================================================== -->
+    <div id="screenVictory" class="screen-victory">
+        <div class="victory-box">
+            <div class="victory-icon">🏆✨</div>
+            <h1>PARABÉNS! PROJETO CONCLUÍDO COM SUCESSO!</h1>
+            <p id="victoryTurmaNome" style="font-size: 16px; font-weight: bold; margin-bottom: 10px; color: #1e293b;">1º Ano do Ensino Médio</p>
+            <p style="font-size: 15px; color: #334155; line-height: 1.5;">
+                Vocês esclareceram todos os conceitos, viram as demonstrações na prática, resolveram os desafios e defenderam o projeto com nota máxima perante a banca!
+            </p>
+            <div class="victory-badge" id="victoryBadgeTitle">🛡️ Defensor da Segurança no Trânsito</div>
+            <br>
+            <button class="btn-retro success" onclick="window.uiManager.returnToClassSelection()">Voltar à Escolha de Turmas</button>
+        </div>
+    </div>
+
+    <!-- Scripts do Jogo -->
+    <script src="js/audio.js"></script>
+    <script src="js/data-turmas.js"></script>
+    <script src="js/vocabulario-data.js"></script>
+    <script src="js/simulations.js"></script>
+    <script src="js/engine.js"></script>
+    <script src="js/ui.js"></script>
+    <script>
+        window.addEventListener("DOMContentLoaded", () => {
+            const rpg = new RPGEngine("rpgCanvas");
+            window.uiManager.init(rpg);
+        });
+    </script>
+</body>
+</html>

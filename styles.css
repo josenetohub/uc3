@@ -1,0 +1,2504 @@
+/* Estilo Geral Full HD & Tela Cheia - Inspirado em RPGs Retrô & Stardew Valley */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+:root {
+    --stardew-wood-dark: #3b1402;
+    --stardew-wood-mid: #682c0b;
+    --stardew-wood-light: #9a3c0e;
+    --stardew-parchment: #fef9c3;
+    --stardew-parchment-border: #b45309;
+    --stardew-gold: #f59e0b;
+    --stardew-green: #15803d;
+    --stardew-blue: #1d4ed8;
+    --stardew-red: #b91c1c;
+    --font-pixel: 'Press Start 2P', monospace, sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+html, body {
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #0b1120;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: #0f172a;
+}
+
+/* ==========================================================
+   TELA INICIAL FULLSCREEN: SELEÇÃO "QUAL TURMA VOCÊ É?"
+   ========================================================== */
+.screen-selector {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+    background: radial-gradient(circle at center, #1e293b 0%, #0b1120 100%);
+    animation: fadeIn 0.4s ease-out;
+}
+
+.title-card {
+    background: var(--stardew-wood-mid);
+    border: 5px solid var(--stardew-wood-dark);
+    box-shadow: 0 10px 0 var(--stardew-wood-dark), 0 20px 30px rgba(0, 0, 0, 0.7);
+    border-radius: 16px;
+    padding: 22px 48px;
+    text-align: center;
+    margin-bottom: 26px;
+    color: #fef08a;
+    max-width: 950px;
+    width: 100%;
+}
+
+.game-main-title {
+    font-family: var(--font-pixel);
+    font-size: 26px;
+    letter-spacing: 2px;
+    color: #fef08a;
+    text-shadow: 4px 4px 0 var(--stardew-wood-dark);
+    margin-bottom: 10px;
+}
+
+.game-sub-title {
+    font-size: 17px;
+    color: #fed7aa;
+    font-weight: 600;
+}
+
+.selection-prompt {
+    font-family: var(--font-pixel);
+    font-size: 22px;
+    color: #fbbf24;
+    text-shadow: 2px 2px 0 #000;
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+.turmas-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    width: 100%;
+    max-width: 1440px;
+}
+
+.turma-card {
+    background: #ffffff;
+    border: 5px solid var(--stardew-wood-mid);
+    box-shadow: 0 8px 0 var(--stardew-wood-dark), 0 14px 22px rgba(0,0,0,0.5);
+    border-radius: 16px;
+    padding: 28px 22px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+    cursor: pointer;
+    min-height: 390px;
+}
+
+.turma-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 0 var(--stardew-wood-dark), 0 20px 28px rgba(0,0,0,0.6);
+    border-color: var(--stardew-gold);
+}
+
+.turma-badge {
+    align-self: flex-start;
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 14px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+.badge-1ano { background: #2563eb; }
+.badge-2ano { background: #d97706; }
+.badge-3ano { background: #7c3aed; }
+
+.turma-card h3 {
+    font-family: var(--font-pixel);
+    font-size: 15px;
+    line-height: 1.5;
+    color: #1e293b;
+    margin-bottom: 14px;
+}
+
+.turma-desc {
+    font-size: 15px;
+    line-height: 1.55;
+    color: #1e293b;
+    font-weight: 500;
+    margin-bottom: 18px;
+}
+
+.turma-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.tag-chip {
+    background: #e0f2fe;
+    color: #0369a1;
+    font-size: 12px;
+    font-weight: 800;
+    padding: 5px 10px;
+    border-radius: 6px;
+    border: 1px solid #bae6fd;
+}
+
+/* ==========================================================
+   TELA PRINCIPAL DO JOGO (FULL HD 100vw x 100vh)
+   ========================================================== */
+.screen-game {
+    display: none;
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background: #000;
+}
+
+/* Canvas Fullscreen */
+.canvas-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+#rpgCanvas {
+    display: block;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    image-rendering: pixelated;
+}
+
+/* HUD Superior Flutuante */
+.rpg-hud {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 64px;
+    z-index: 30;
+    background: rgba(104, 44, 11, 0.96);
+    border-bottom: 4px solid var(--stardew-wood-dark);
+    padding: 0 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.6);
+    backdrop-filter: blur(4px);
+}
+
+.hud-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.hud-turma-badge {
+    background: #0f172a;
+    color: #fef08a;
+    font-family: var(--font-pixel);
+    font-size: 13px;
+    padding: 8px 16px;
+    border: 2px solid #fbbf24;
+    border-radius: 8px;
+}
+
+.hud-cenario {
+    color: #fde68a;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.hud-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Pergaminho Pinned Flutuante de Objetivo */
+.hud-pergaminho {
+    position: absolute;
+    top: 76px;
+    left: 24px;
+    z-index: 25;
+    background: #fffbeb;
+    border: 4px solid var(--stardew-wood-dark);
+    border-radius: 12px;
+    padding: 10px 22px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    cursor: pointer;
+    box-shadow: 0 8px 18px rgba(0,0,0,0.6);
+    max-width: 680px;
+    transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.hud-pergaminho:hover {
+    background: #fef08a;
+    transform: scale(1.02);
+}
+
+.hud-icon-box {
+    font-size: 34px;
+}
+
+.hud-info-box h4 {
+    font-family: var(--font-pixel);
+    font-size: 12px;
+    color: var(--stardew-wood-dark);
+    margin-bottom: 4px;
+}
+
+.hud-info-box p {
+    font-size: 14px;
+    color: #78350f;
+    font-weight: 800;
+}
+
+/* Barra Inferior com Controles */
+.rpg-footer-bar {
+    position: absolute;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 25;
+    background: rgba(15, 23, 42, 0.95);
+    border: 2px solid var(--stardew-wood-mid);
+    border-radius: 10px;
+    padding: 8px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    color: #f8fafc;
+    font-size: 14px;
+    font-weight: 600;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.6);
+    backdrop-filter: blur(4px);
+}
+
+.footer-keys span {
+    background: #334155;
+    color: #fef08a;
+    padding: 3px 8px;
+    border-radius: 6px;
+    border: 1px solid #64748b;
+    font-family: monospace;
+    font-weight: bold;
+    font-size: 13px;
+    margin: 0 2px;
+}
+
+/* ==========================================================
+   BOTÕES RETRÔ VIBRANTES
+   ========================================================== */
+.btn-retro {
+    background: var(--stardew-wood-mid);
+    color: #fef08a;
+    border: 3px solid var(--stardew-wood-dark);
+    box-shadow: 0 4px 0 var(--stardew-wood-dark);
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-family: var(--font-pixel);
+    font-size: 11px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    transition: all 0.1s ease;
+    display: inline-block;
+}
+
+.btn-retro:hover {
+    background: var(--stardew-wood-light);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 var(--stardew-wood-dark);
+}
+
+.btn-retro:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 var(--stardew-wood-dark);
+}
+
+.btn-retro.sm {
+    padding: 8px 12px;
+    font-size: 10px;
+}
+
+.btn-retro.success {
+    background: var(--stardew-green);
+    border-color: #064e3b;
+    box-shadow: 0 4px 0 #064e3b;
+    color: #ecfdf5;
+}
+.btn-retro.success:hover {
+    background: #16a34a;
+}
+
+.btn-retro.danger {
+    background: var(--stardew-red);
+    border-color: #7f1d1d;
+    box-shadow: 0 4px 0 #7f1d1d;
+    color: #fff;
+}
+
+.btn-retro.active {
+    background: #fbbf24;
+    color: #451a03;
+    border-color: #b45309;
+}
+
+.btn-retro.full-width {
+    width: 100%;
+}
+
+/* ==========================================================
+   MODAIS INTERATIVOS (SIMULAÇÕES, CÁLCULOS, PROJETOS)
+   ========================================================== */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(11, 17, 32, 0.92);
+    backdrop-filter: blur(6px);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+    animation: fadeIn 0.2s ease-out;
+}
+
+.modal-content-box {
+    background: #fffbeb;
+    border: 7px solid var(--stardew-wood-mid);
+    border-radius: 18px;
+    box-shadow: 0 14px 0 var(--stardew-wood-dark), 0 25px 40px rgba(0, 0, 0, 0.8);
+    width: 100%;
+    max-width: 980px;
+    max-height: 94vh;
+    overflow-y: auto;
+    padding: 32px;
+    position: relative;
+    color: #0f172a;
+}
+
+.btn-close-modal {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: #dc2626;
+    border: 3px solid #7f1d1d;
+    color: #fff;
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    font-family: var(--font-pixel);
+    font-size: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.1s ease;
+}
+
+.btn-close-modal:hover {
+    background: #b91c1c;
+    transform: scale(1.05);
+}
+
+/* Cabeçalho da Simulação */
+.sim-header {
+    border-bottom: 3px dashed var(--stardew-wood-light);
+    padding-bottom: 16px;
+    margin-bottom: 20px;
+}
+
+.sim-badge {
+    background: #1e293b;
+    color: #fef08a;
+    font-size: 13px;
+    font-weight: 800;
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+}
+
+.sim-title {
+    font-family: var(--font-pixel);
+    font-size: 18px;
+    color: var(--stardew-wood-dark);
+    margin-bottom: 14px;
+    line-height: 1.45;
+}
+
+.sim-npc-speech {
+    display: flex;
+    gap: 16px;
+    background: #ffffff;
+    border: 3px solid #cbd5e1;
+    border-radius: 12px;
+    padding: 16px 20px;
+    font-size: 15px;
+    color: #0f172a;
+    line-height: 1.55;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.npc-avatar {
+    font-size: 40px;
+}
+
+/* Área Interativa / Canvas de Simulação */
+.sim-canvas-container {
+    background: #0f172a;
+    border: 4px solid var(--stardew-wood-mid);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 18px;
+}
+
+.sim-canvas-container canvas {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.sim-controls {
+    background: #1e293b;
+    padding: 14px 20px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    color: #f8fafc;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.control-toggle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.sim-feedback-card {
+    background: #ffffff;
+    border: 3px solid #cbd5e1;
+    border-radius: 12px;
+    padding: 16px 20px;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.55;
+    margin-bottom: 20px;
+}
+
+.text-success { color: #15803d; font-weight: 700; }
+.text-danger { color: #b91c1c; font-weight: 700; }
+
+/* Dashboard de Indicadores */
+.sim-dashboard {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin-bottom: 18px;
+}
+
+.meter-column {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.meter-card {
+    background: #ffffff;
+    border: 3px solid #cbd5e1;
+    border-radius: 12px;
+    padding: 14px 18px;
+}
+
+.meter-label {
+    display: block;
+    font-size: 13px;
+    font-weight: 800;
+    color: #475569;
+    margin-bottom: 6px;
+}
+
+.meter-val {
+    font-size: 15px;
+    font-weight: 700;
+    margin-top: 6px;
+}
+
+.force-display, .temp-display {
+    font-family: var(--font-pixel);
+    font-size: 20px;
+    color: var(--stardew-red);
+    margin: 8px 0;
+}
+
+.danger-bar-wrapper {
+    width: 100%;
+    height: 14px;
+    background: #e2e8f0;
+    border-radius: 7px;
+    overflow: hidden;
+    margin: 8px 0;
+}
+
+.danger-bar {
+    height: 100%;
+    transition: width 0.2s ease, background 0.2s ease;
+}
+
+.meter-status {
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.graph-column, .house-column, .wave-column {
+    background: #0f172a;
+    border: 4px solid var(--stardew-wood-mid);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.graph-column canvas, .house-column canvas, .wave-column canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+/* Caixa de Cálculo Objetivo */
+.calc-box {
+    background: #ffffff;
+    border: 4px solid var(--stardew-wood-mid);
+    border-radius: 12px;
+    padding: 22px;
+    margin-top: 20px;
+    box-shadow: 0 6px 0 var(--stardew-wood-dark);
+}
+
+.calc-badge {
+    background: var(--stardew-wood-mid);
+    color: #fef08a;
+    font-family: var(--font-pixel);
+    font-size: 11px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    display: inline-block;
+    margin-bottom: 14px;
+}
+
+.calc-question {
+    font-size: 16px;
+    font-weight: 700;
+    color: #0f172a;
+    line-height: 1.55;
+    margin-bottom: 18px;
+}
+
+.calc-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.btn-option {
+    background: #f8fafc;
+    border: 3px solid #cbd5e1;
+    border-radius: 10px;
+    padding: 14px 20px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #0f172a;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.btn-option:hover {
+    background: #f1f5f9;
+    border-color: #64748b;
+    transform: translateX(4px);
+}
+
+.btn-option.correct {
+    background: #dcfce7 !important;
+    border-color: #16a34a !important;
+    color: #14532d !important;
+    font-weight: 800;
+}
+
+.btn-option.wrong {
+    background: #fee2e2 !important;
+    border-color: #dc2626 !important;
+    color: #7f1d1d !important;
+}
+
+/* ==========================================================
+   OFICINA MAKER / PRODUÇÃO DIGITAL (LIMPO E SEM CARDS REDUNDANTES)
+   ========================================================== */
+.maker-clean-panel {
+    background: #ffffff;
+    border: 4px solid var(--stardew-wood-mid);
+    border-radius: 14px;
+    padding: 22px;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+}
+
+.maker-instructions-prompt {
+    font-size: 16px;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 14px;
+}
+
+.maker-blocks-pool {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.maker-block-item {
+    background: #ffffff;
+    border: 3px solid #64748b;
+    border-radius: 10px;
+    padding: 12px 18px;
+    font-size: 15px;
+    font-weight: 700;
+    color: #0f172a;
+    line-height: 1.5;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.06);
+    transition: all 0.15s ease;
+}
+
+.maker-block-item:hover {
+    border-color: #2563eb;
+    background: #eff6ff;
+    transform: translateY(-2px);
+}
+
+.maker-block-item.selected {
+    border: 3px solid #16a34a;
+    background: #dcfce7;
+    color: #14532d;
+    box-shadow: 0 4px 10px rgba(22, 163, 74, 0.25);
+}
+
+.item-check-icon {
+    font-size: 20px;
+    min-width: 24px;
+}
+
+.maker-action-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 2px dashed #cbd5e1;
+}
+
+.maker-counter-badge {
+    font-size: 15px;
+    font-weight: 800;
+    color: #334155;
+    background: #f1f5f9;
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: 2px solid #cbd5e1;
+}
+
+.pixel-art-header-box {
+    background: #0f172a;
+    color: #fbbf24;
+    border-radius: 10px;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-family: var(--font-pixel);
+    font-size: 13px;
+    margin-bottom: 16px;
+}
+
+.audio-mixer-controls {
+    background: #0f172a;
+    color: #f8fafc;
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 16px;
+    font-size: 13px;
+}
+
+.slider-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+/* ==========================================================
+   OFICINA DO MAPA MENTAL NO CADERNO ESCOLAR (DESIGN MODERNO & VISUAL)
+   ========================================================== */
+.mindmap-activity-container {
+    background: #ffffff;
+    border: 4px solid var(--stardew-wood-mid);
+    border-radius: 14px;
+    padding: 24px;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+}
+
+.mindmap-guide-banner {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    background: #fefce8;
+    border: 3px solid #facc15;
+    border-radius: 12px;
+    padding: 16px 22px;
+    margin-bottom: 24px;
+    box-shadow: 0 3px 8px rgba(250, 204, 21, 0.2);
+}
+
+.guide-banner-icon {
+    font-size: 38px;
+    line-height: 1;
+}
+
+.guide-banner-content h3 {
+    font-size: 17px;
+    font-weight: 800;
+    color: #78350f;
+    margin-bottom: 6px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.guide-banner-content p {
+    font-size: 14px;
+    color: #1e293b;
+    line-height: 1.55;
+    margin: 0;
+}
+
+/* Mockup da Folha de Caderno com Espirais Realistas */
+.notebook-sheet-card {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.12), 0 2px 6px rgba(0,0,0,0.06);
+    border: 2px solid #cbd5e1;
+    overflow: hidden;
+    margin-bottom: 24px;
+}
+
+.notebook-spiral-strip {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background: #e2e8f0;
+    padding: 8px 24px;
+    border-bottom: 2px solid #cbd5e1;
+}
+
+.spiral-ring {
+    width: 14px;
+    height: 24px;
+    background: linear-gradient(180deg, #94a3b8 0%, #f8fafc 50%, #64748b 100%);
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.25);
+    border: 1px solid #475569;
+}
+
+.notebook-sheet-body {
+    background-color: #ffffff;
+    background-image: repeating-linear-gradient(#ffffff, #ffffff 31px, #f1f5f9 32px);
+    padding: 30px 32px 36px 42px;
+    border-left: 5px solid rgba(239, 68, 68, 0.45); /* Linha Vermelha de Margem */
+    position: relative;
+}
+
+/* Núcleo Central do Mapa Mental */
+.mindmap-central-hub {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    border: 4px solid #f59e0b;
+    border-radius: 18px;
+    padding: 18px 28px;
+    max-width: 620px;
+    margin: 0 auto 32px auto;
+    text-align: center;
+    color: #ffffff;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2), 0 0 0 4px rgba(245, 158, 11, 0.2);
+    position: relative;
+    z-index: 2;
+}
+
+.hub-tag {
+    display: inline-block;
+    background: rgba(245, 158, 11, 0.25);
+    color: #fbbf24;
+    font-size: 11px;
+    font-weight: 800;
+    padding: 4px 14px;
+    border-radius: 12px;
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+    border: 1px solid rgba(245, 158, 11, 0.5);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.hub-title {
+    font-size: 21px;
+    font-weight: 900;
+    color: #ffffff;
+    letter-spacing: 0.5px;
+    line-height: 1.3;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.hub-sub {
+    font-size: 13px;
+    color: #cbd5e1;
+    margin-top: 6px;
+    font-weight: 600;
+}
+
+/* Grid dos 4 Ramos Radiantes */
+.mindmap-branches-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 22px;
+}
+
+/* Card do Ramo */
+.mindmap-branch-node {
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 20px;
+    border: 3px solid #cbd5e1;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.mindmap-branch-node:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+.branch-node-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 2px dashed #e2e8f0;
+}
+
+.branch-badge {
+    font-size: 12px;
+    font-weight: 900;
+    color: #ffffff;
+    padding: 4px 12px;
+    border-radius: 8px;
+    letter-spacing: 0.5px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.branch-drawing-hint {
+    font-size: 12px;
+    font-weight: 700;
+    color: #64748b;
+}
+
+.branch-title {
+    font-size: 17px;
+    font-weight: 800;
+    line-height: 1.35;
+    margin-bottom: 14px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.branch-items-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.branch-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #1e293b;
+    line-height: 1.5;
+}
+
+.branch-bullet-icon {
+    font-size: 16px;
+    min-width: 18px;
+    line-height: 1.4;
+    font-weight: 900;
+}
+
+/* Painel de Checklist Interativo */
+.mindmap-checklist-panel {
+    background: #f8fafc;
+    border: 3px solid #cbd5e1;
+    border-radius: 12px;
+    padding: 20px 24px;
+}
+
+.checklist-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.checklist-header h4 {
+    font-size: 16px;
+    font-weight: 800;
+    color: #0f172a;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.checklist-subtitle {
+    font-size: 13px;
+    color: #64748b;
+    font-weight: 600;
+    margin-top: 2px;
+}
+
+.checklist-progress-badge {
+    font-family: var(--font-pixel);
+    font-size: 11px;
+    background: #e2e8f0;
+    color: #1e293b;
+    padding: 6px 14px;
+    border-radius: 8px;
+    border: 2px solid #cbd5e1;
+}
+
+.checklist-progress-bar {
+    width: 100%;
+    height: 10px;
+    background: #e2e8f0;
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 16px;
+}
+
+.checklist-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #10b981, #059669);
+    transition: width 0.3s ease;
+    border-radius: 6px;
+}
+
+.checklist-items-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+}
+
+.checklist-toggle-card {
+    background: #ffffff;
+    border: 2px solid #cbd5e1;
+    border-radius: 10px;
+    padding: 12px 18px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.checklist-toggle-card:hover {
+    border-color: #2563eb;
+    background: #eff6ff;
+}
+
+.checklist-toggle-card.checked {
+    border-color: #16a34a;
+    background: #f0fdf4;
+}
+
+.checklist-toggle-card input[type="checkbox"] {
+    display: none;
+}
+
+.custom-chk-box {
+    width: 22px;
+    height: 22px;
+    border: 2px solid #94a3b8;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+    transition: all 0.15s ease;
+    flex-shrink: 0;
+}
+
+.checklist-toggle-card input[type="checkbox"]:checked + .custom-chk-box {
+    background: #16a34a;
+    border-color: #16a34a;
+}
+
+.checklist-toggle-card input[type="checkbox"]:checked + .custom-chk-box::after {
+    content: "✓";
+    color: #ffffff;
+    font-weight: 900;
+    font-size: 15px;
+}
+
+.chk-label-text {
+    font-size: 14px;
+    color: #1e293b;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.chk-label-text strong {
+    color: #0f172a;
+}
+
+/* ==========================================================
+   NOVO: SIMULADOR DE CONSTRUÇÃO DE CASA TÉRMICA (BIOMAS)
+   ========================================================== */
+.house-sim-container {
+    background: #ffffff;
+    border: 4px solid var(--stardew-wood-mid);
+    border-radius: 14px;
+    padding: 24px;
+    margin-bottom: 20px;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.1);
+}
+
+.house-sim-selectors {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 18px;
+}
+
+.selector-panel {
+    background: #f8fafc;
+    border: 3px solid #cbd5e1;
+    border-radius: 10px;
+    padding: 14px;
+}
+
+.selector-title {
+    font-size: 13px;
+    font-weight: 800;
+    color: #475569;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.selector-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.btn-chip {
+    background: #ffffff;
+    border: 2px solid #cbd5e1;
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #1e293b;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.btn-chip:hover {
+    border-color: #2563eb;
+    background: #eff6ff;
+}
+
+.btn-chip.active {
+    background: #2563eb;
+    border-color: #1e40af;
+    color: #ffffff;
+}
+
+.house-canvas-box {
+    background: #0f172a;
+    border: 4px solid var(--stardew-wood-mid);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 18px;
+}
+
+.house-canvas-box canvas {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.house-gauges-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: 18px;
+}
+
+.gauge-card {
+    background: #f8fafc;
+    border: 3px solid #cbd5e1;
+    border-radius: 10px;
+    padding: 14px;
+    text-align: center;
+}
+
+.gauge-label {
+    font-size: 12px;
+    font-weight: 800;
+    color: #64748b;
+    margin-bottom: 4px;
+}
+
+.gauge-value {
+    font-family: var(--font-pixel);
+    font-size: 20px;
+    margin: 6px 0;
+}
+
+.gauge-desc {
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.house-materials-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: 18px;
+}
+
+.material-select-box {
+    background: #f8fafc;
+    border: 2px solid #cbd5e1;
+    border-radius: 10px;
+    padding: 12px;
+}
+
+.material-select-box label {
+    display: block;
+    font-size: 12px;
+    font-weight: 800;
+    color: #334155;
+    margin-bottom: 6px;
+}
+
+/* ==========================================================
+   BANCA DE AVALIAÇÃO FINAL
+   ========================================================== */
+.banca-container {
+    background: #ffffff;
+    border: 4px solid var(--stardew-wood-mid);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 20px;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.08);
+}
+
+.banca-status-bar {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-pixel);
+    font-size: 12px;
+    color: var(--stardew-wood-mid);
+    border-bottom: 2px solid #e2e8f0;
+    padding-bottom: 12px;
+    margin-bottom: 18px;
+}
+
+.banca-q-title {
+    font-size: 15px;
+    font-weight: 800;
+    color: #64748b;
+    margin-bottom: 10px;
+}
+
+.banca-q-text {
+    font-size: 18px;
+    font-weight: 800;
+    color: #0f172a;
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
+.banca-options {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.banca-results {
+    text-align: center;
+    padding: 28px 0;
+}
+
+.final-score {
+    font-family: var(--font-pixel);
+    font-size: 26px;
+    color: #15803d;
+    margin: 20px 0;
+}
+
+/* ==========================================================
+   TELA DE VITÓRIA / CONCLUSÃO
+   ========================================================== */
+.screen-victory {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(11, 17, 32, 0.95);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+}
+
+.victory-box {
+    background: #fffbeb;
+    border: 8px solid var(--stardew-wood-mid);
+    box-shadow: 0 16px 0 var(--stardew-wood-dark), 0 25px 40px rgba(0,0,0,0.85);
+    border-radius: 20px;
+    padding: 40px 36px;
+    text-align: center;
+    max-width: 680px;
+    width: 100%;
+    animation: bounceIn 0.5s ease-out;
+}
+
+.victory-icon {
+    font-size: 68px;
+    margin-bottom: 18px;
+}
+
+.victory-box h1 {
+    font-family: var(--font-pixel);
+    font-size: 22px;
+    color: var(--stardew-wood-dark);
+    margin-bottom: 16px;
+}
+
+.victory-badge {
+    background: #1e293b;
+    color: #fbbf24;
+    font-family: var(--font-pixel);
+    font-size: 16px;
+    padding: 14px 24px;
+    border-radius: 12px;
+    border: 4px solid var(--stardew-gold);
+    display: inline-block;
+    margin: 18px 0 26px 0;
+}
+
+/* ==========================================================
+   CADERNO DE PROJETOS & DIÁRIO
+   ========================================================== */
+.caderno-book {
+    padding: 8px;
+}
+
+.caderno-book h2 {
+    font-family: var(--font-pixel);
+    font-size: 17px;
+    color: var(--stardew-wood-dark);
+    margin-bottom: 10px;
+}
+
+.caderno-book p {
+    font-size: 15px;
+    color: #334155;
+    font-weight: 500;
+}
+
+.caderno-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 20px;
+}
+
+.caderno-phase-card {
+    background: #ffffff;
+    border: 3px solid #cbd5e1;
+    border-radius: 12px;
+    padding: 16px;
+}
+
+.caderno-phase-card.done {
+    border-color: #10b981;
+    background: #f0fdf4;
+}
+
+.caderno-phase-card.current {
+    border-color: #f59e0b;
+    background: #fefce8;
+}
+
+.caderno-phase-card.locked {
+    opacity: 0.6;
+    background: #f1f5f9;
+}
+
+.card-status {
+    font-size: 12px;
+    font-weight: 800;
+    margin-bottom: 8px;
+}
+
+/* Select Estilo Retrô */
+.select-retro {
+    width: 100%;
+    padding: 10px 12px;
+    border: 2px solid #cbd5e1;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    background: #ffffff;
+    color: #0f172a;
+    outline: none;
+    cursor: pointer;
+}
+
+/* Animações */
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.98); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes bounceIn {
+    0% { transform: scale(0.85); opacity: 0; }
+    70% { transform: scale(1.04); }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+
+/* ==========================================================
+   NOVOS JOGOS INTERATIVOS: RELACIONAR, COMPLETAR, CLASSIFICAR, CÁLCULOS E WI-FI
+   ========================================================== */
+
+/* 1. JOGO DE RELACIONAR COLUNAS */
+.matching-game-container {
+    background: #ffffff;
+    border: 4px solid var(--stardew-wood-mid);
+    border-radius: 14px;
+    padding: 22px;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+}
+
+.matching-instructions-prompt {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: #fefce8;
+    border: 3px solid #facc15;
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-bottom: 16px;
+    font-size: 15px;
+    color: #1e293b;
+    line-height: 1.5;
+}
+
+.matching-status-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f1f5f9;
+    padding: 10px 16px;
+    border-radius: 8px;
+    border: 2px solid #cbd5e1;
+    margin-bottom: 18px;
+}
+
+.matching-counter {
+    font-family: var(--font-pixel);
+    font-size: 13px;
+    color: #1e293b;
+}
+
+.matching-hint {
+    font-size: 13px;
+    color: #64748b;
+    font-weight: 600;
+}
+
+.matching-columns-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.matching-column {
+    background: #f8fafc;
+    border: 3px solid #cbd5e1;
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.matching-column-title {
+    font-family: var(--font-pixel);
+    font-size: 12px;
+    color: #0f172a;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.matching-card {
+    background: #ffffff;
+    border: 3px solid #64748b;
+    border-radius: 10px;
+    padding: 14px 16px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #0f172a;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.06);
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    line-height: 1.45;
+}
+
+.matching-pin {
+    font-size: 18px;
+    min-width: 20px;
+}
+
+.matching-text {
+    flex: 1;
+}
+
+.matching-card:hover:not(:disabled) {
+    border-color: #2563eb;
+    background: #eff6ff;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(37, 99, 235, 0.15);
+}
+
+.matching-card.selected {
+    border-color: #f59e0b !important;
+    background: #fefce8 !important;
+    box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.4) !important;
+    transform: scale(1.02);
+}
+
+.matching-card.matched {
+    border-color: #16a34a !important;
+    background: #dcfce7 !important;
+    color: #14532d !important;
+    cursor: default !important;
+    box-shadow: none !important;
+    transform: none !important;
+}
+
+.matching-card.wrong {
+    border-color: #dc2626 !important;
+    background: #fee2e2 !important;
+    color: #7f1d1d !important;
+    animation: shake 0.4s ease-in-out;
+}
+
+/* 2. JOGO DE COMPLETAR LACUNAS */
+.fill-blanks-container {
+    background: #ffffff;
+    border: 4px solid var(--stardew-wood-mid);
+    border-radius: 14px;
+    padding: 22px;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+}
+
+.fill-header-prompt {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: #eff6ff;
+    border: 3px solid #3b82f6;
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-bottom: 20px;
+    font-size: 15px;
+    color: #1e3a8a;
+    line-height: 1.5;
+}
+
+.sentences-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-bottom: 20px;
+}
+
+.sentence-card {
+    background: #f8fafc;
+    border: 2px solid #cbd5e1;
+    border-radius: 10px;
+    padding: 16px 20px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.04);
+}
+
+.sentence-number {
+    font-family: var(--font-pixel);
+    font-size: 11px;
+    color: #64748b;
+    margin-bottom: 8px;
+}
+
+.sentence-text {
+    font-size: 16px;
+    font-weight: 600;
+    color: #0f172a;
+    line-height: 1.9;
+}
+
+.slot-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 14px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    vertical-align: middle;
+}
+
+.slot-btn.empty {
+    background: #ffffff;
+    border: 2px dashed #64748b;
+    color: #475569;
+}
+
+.slot-btn.empty:hover,
+.slot-btn.empty.active {
+    border-color: #f59e0b;
+    background: #fefce8;
+    color: #b45309;
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.4);
+}
+
+.slot-btn.filled {
+    background: #dbeafe;
+    border: 2px solid #2563eb;
+    color: #1e40af;
+}
+
+.slot-btn.filled:hover {
+    background: #bfdbfe;
+    border-color: #1d4ed8;
+}
+
+.slot-btn.filled.active {
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.4);
+}
+
+.slot-btn.correct {
+    background: #dcfce7 !important;
+    border-color: #16a34a !important;
+    color: #14532d !important;
+}
+
+.slot-btn.wrong {
+    background: #fee2e2 !important;
+    border-color: #dc2626 !important;
+    color: #7f1d1d !important;
+    animation: shake 0.4s ease-in-out;
+}
+
+.slot-remove {
+    font-size: 12px;
+    color: #ef4444;
+    font-weight: 900;
+    margin-left: 4px;
+}
+
+.word-bank-section {
+    background: #0f172a;
+    border-radius: 12px;
+    padding: 18px 22px;
+    margin-bottom: 18px;
+}
+
+.word-bank-title {
+    color: #fef08a;
+    font-family: var(--font-pixel);
+    font-size: 12px;
+    margin-bottom: 12px;
+}
+
+.word-chips-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.word-chip {
+    background: #ffffff;
+    border: 2px solid #94a3b8;
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: 800;
+    color: #0f172a;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+}
+
+.word-chip:hover:not(:disabled) {
+    border-color: #fbbf24;
+    background: #fefce8;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(251, 191, 36, 0.3);
+}
+
+.word-chip.used {
+    opacity: 0.3;
+    cursor: not-allowed;
+    background: #334155;
+    color: #94a3b8;
+    border-color: #475569;
+    box-shadow: none;
+}
+
+.fill-action-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 14px;
+    border-top: 2px dashed #cbd5e1;
+}
+
+.fill-counter-badge {
+    font-size: 15px;
+    font-weight: 800;
+    color: #334155;
+    background: #f1f5f9;
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: 2px solid #cbd5e1;
+}
+
+/* 3. JOGO DE CLASSIFICAR MATERIAIS */
+.classify-container {
+    background: #ffffff;
+    border: 4px solid var(--stardew-wood-mid);
+    border-radius: 14px;
+    padding: 22px;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+}
+
+.classify-header-prompt {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: #fefce8;
+    border: 3px solid #facc15;
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-bottom: 18px;
+    font-size: 15px;
+    color: #1e293b;
+    line-height: 1.5;
+}
+
+.classify-bins-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin-bottom: 20px;
+}
+
+.classify-bin {
+    border-radius: 12px;
+    padding: 16px;
+    min-height: 130px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.05);
+}
+
+.bin-condutor {
+    background: #fff7ed;
+    border: 3px solid #ea580c;
+}
+
+.bin-isolante {
+    background: #eff6ff;
+    border: 3px solid #2563eb;
+}
+
+.bin-header {
+    font-family: var(--font-pixel);
+    font-size: 13px;
+    margin-bottom: 4px;
+}
+
+.bin-condutor .bin-header {
+    color: #c2410c;
+}
+
+.bin-isolante .bin-header {
+    color: #1d4ed8;
+}
+
+.bin-sub {
+    font-size: 12px;
+    color: #64748b;
+    margin-bottom: 12px;
+    font-weight: 600;
+}
+
+.bin-items-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.bin-item-pill {
+    background: #ffffff;
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 13px;
+    font-weight: 800;
+    color: #0f172a;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+    border: 2px solid #cbd5e1;
+    animation: bounceIn 0.3s ease-out;
+}
+
+.classify-deck-section {
+    border-top: 2px dashed #cbd5e1;
+    padding-top: 16px;
+}
+
+.classify-deck-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 700;
+    color: #334155;
+    margin-bottom: 12px;
+}
+
+.classify-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+.classify-card {
+    background: #ffffff;
+    border: 2px solid #94a3b8;
+    border-radius: 10px;
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 8px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.05);
+    transition: all 0.15s ease;
+}
+
+.card-item-title {
+    font-weight: 800;
+    font-size: 15px;
+    color: #0f172a;
+}
+
+.card-item-desc {
+    font-size: 12px;
+    color: #64748b;
+    line-height: 1.4;
+    font-weight: 500;
+}
+
+.card-item-buttons {
+    display: flex;
+    gap: 6px;
+    margin-top: 4px;
+}
+
+.btn-classify-action {
+    flex: 1;
+    font-size: 11px;
+    padding: 6px 8px;
+}
+
+.classified-done {
+    background: #f0fdf4 !important;
+    border-color: #16a34a !important;
+    box-shadow: none !important;
+}
+
+.card-done-badge {
+    font-weight: 800;
+    font-size: 14px;
+    color: #166534;
+}
+
+.classify-shake {
+    animation: shake 0.4s ease-in-out;
+}
+
+/* 4. QUIZ DE CÁLCULOS DO PERITO */
+.calc-perito-container {
+    background: #ffffff;
+    border: 4px solid var(--stardew-wood-mid);
+    border-radius: 14px;
+    padding: 22px;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+}
+
+.calc-formula-banner {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: #eff6ff;
+    border: 3px solid #3b82f6;
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    color: #1e3a8a;
+}
+
+.formula-line {
+    font-family: var(--font-pixel);
+    font-size: 12px;
+    color: #1d4ed8;
+    margin-top: 6px;
+}
+
+.calc-question-card {
+    background: #f8fafc;
+    border: 2px solid #cbd5e1;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.calc-step-tag {
+    font-family: var(--font-pixel);
+    font-size: 12px;
+    color: #b45309;
+    margin-bottom: 10px;
+}
+
+.calc-perito-question {
+    font-size: 17px;
+    font-weight: 700;
+    color: #0f172a;
+    line-height: 1.6;
+    margin-bottom: 18px;
+}
+
+/* 5. SIMULADOR DE WI-FI NOS CÔMODOS & PAREDES */
+.wifi-sim-container {
+    background: #ffffff;
+    border: 4px solid var(--stardew-wood-mid);
+    border-radius: 14px;
+    padding: 22px;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+}
+
+.wifi-controls-bar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 14px;
+    background: #1e293b;
+    padding: 14px 18px;
+    border-radius: 10px;
+    margin-bottom: 16px;
+    color: #f8fafc;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.control-segment {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.wifi-canvas-wrapper {
+    border-radius: 10px;
+    overflow: hidden;
+    border: 3px solid #334155;
+    margin-bottom: 16px;
+    background: #0f172a;
+}
+
+.wifi-canvas-wrapper canvas {
+    display: block;
+    width: 100%;
+}
+
+.wifi-readout-panel {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1.6fr;
+    gap: 14px;
+}
+
+.readout-card {
+    background: #f8fafc;
+    border: 2px solid #cbd5e1;
+    border-radius: 10px;
+    padding: 12px 16px;
+    text-align: center;
+}
+
+.readout-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: #64748b;
+    display: block;
+}
+
+.readout-val {
+    font-size: 18px;
+    font-weight: 800;
+    margin-top: 4px;
+    color: #0f172a;
+}
+
+.readout-status {
+    font-size: 13px;
+    font-weight: 600;
+    color: #334155;
+    margin-top: 4px;
+    line-height: 1.4;
+}
+
+/* Animação de Shake para erros */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-6px); }
+    40%, 80% { transform: translateX(6px); }
+}
+
+/* ==========================================================================
+   NOVOS MÓDULOS DE SIMULAÇÃO (ABS, FATOS, DEFORMAÇÃO, TÉRMICA, CHAMINÉ, VÁCUO, WI-FI POS)
+   ========================================================================== */
+
+.bin-fato {
+    background: #f0fdf4;
+    border: 3px solid #16a34a;
+}
+
+.bin-fato .bin-header {
+    color: #15803d;
+}
+
+.bin-mito {
+    background: #fef2f2;
+    border: 3px solid #dc2626;
+}
+
+.bin-mito .bin-header {
+    color: #b91c1c;
+}
+
+.btn-classify-action.fato {
+    background: #dcfce7;
+    border-color: #16a34a;
+    color: #15803d;
+}
+
+.btn-classify-action.fato:hover {
+    background: #bbf7d0;
+}
+
+.btn-classify-action.mito {
+    background: #fee2e2;
+    border-color: #dc2626;
+    color: #b91c1c;
+}
+
+.btn-classify-action.mito:hover {
+    background: #fecaca;
+}
+
+.gauge-chip-row {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 10px;
+    flex-wrap: wrap;
+}
+
+.gauge-chip {
+    background: #ffffff;
+    border: 2px solid #cbd5e1;
+    border-radius: 8px;
+    padding: 6px 14px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #334155;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+}
+
+.gauge-chip strong {
+    color: #0f172a;
+    margin-left: 4px;
+}
+
+/* ==========================================================================
+   VOCABULÁRIO FÍSICO & LETRAMENTO CIENTÍFICO (GLOSSÁRIO INTERATIVO)
+   ========================================================================== */
+
+/* 1. Banner de Vocabulário no Topo de Cada Missão */
+.sim-vocab-banner {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: linear-gradient(135deg, #f0fdf4 0%, #e0f2fe 100%);
+    border: 2px solid #38bdf8;
+    border-radius: 10px;
+    padding: 8px 14px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.vocab-banner-label {
+    font-size: 12px;
+    font-weight: 800;
+    color: #0369a1;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+
+.vocab-banner-chips {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.vocab-chip-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #ffffff;
+    border: 2px solid #0284c7;
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #0369a1;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+    transition: all 0.15s ease;
+}
+
+.vocab-chip-btn:hover {
+    background: #0284c7;
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(2, 132, 199, 0.25);
+}
+
+.chip-info-icon {
+    font-size: 11px;
+    opacity: 0.8;
+}
+
+/* 2. Modal do Vocabulário Físico */
+.vocab-panel-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.vocab-panel-header {
+    border-bottom: 3px solid var(--stardew-wood-mid);
+    padding-bottom: 12px;
+}
+
+.vocab-header-badge {
+    display: inline-block;
+    background: #10b981;
+    color: #ffffff;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+}
+
+.vocab-title {
+    font-family: var(--font-pixel);
+    font-size: 18px;
+    color: var(--stardew-wood-dark);
+    margin: 4px 0 6px 0;
+}
+
+.vocab-subtitle {
+    font-size: 13px;
+    color: #475569;
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* 3. Barra de Busca e Filtros */
+.vocab-toolbar {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: #f8fafc;
+    border: 2px solid #cbd5e1;
+    border-radius: 12px;
+    padding: 12px;
+}
+
+.vocab-search-wrap {
+    position: relative;
+    width: 100%;
+}
+
+.vocab-search-input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 38px 10px 14px;
+    font-size: 14px;
+    border: 2px solid #94a3b8;
+    border-radius: 8px;
+    outline: none;
+    font-family: inherit;
+    transition: border-color 0.15s ease;
+}
+
+.vocab-search-input:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.btn-clear-search {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    font-size: 14px;
+    color: #94a3b8;
+    cursor: pointer;
+    padding: 4px;
+}
+
+.btn-clear-search:hover {
+    color: #ef4444;
+}
+
+.vocab-filter-tabs {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.vocab-tab-btn {
+    background: #ffffff;
+    border: 2px solid #cbd5e1;
+    border-radius: 8px;
+    padding: 6px 14px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #475569;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.vocab-tab-btn:hover {
+    background: #f1f5f9;
+    border-color: #94a3b8;
+}
+
+.vocab-tab-btn.active {
+    background: var(--stardew-wood-dark);
+    border-color: var(--stardew-wood-dark);
+    color: #ffffff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+/* 4. Contador & Dica */
+.vocab-counter-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    font-weight: 700;
+    color: #64748b;
+    padding: 0 4px;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.vocab-hint-tip {
+    font-size: 12px;
+    font-weight: 600;
+    color: #0369a1;
+}
+
+/* 5. Grade de Cartões de Vocabulário */
+.vocab-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    max-height: 52vh;
+    overflow-y: auto;
+    padding-right: 6px;
+}
+
+@media (max-width: 900px) {
+    .vocab-cards-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.vocab-term-card {
+    background: #ffffff;
+    border: 2px solid #cbd5e1;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: all 0.2s ease;
+}
+
+.vocab-term-card:hover {
+    border-color: #94a3b8;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+}
+
+.vocab-term-card.highlighted-term {
+    border: 3px solid #f59e0b !important;
+    background: #fffbeb !important;
+    box-shadow: 0 0 15px rgba(245, 158, 11, 0.3) !important;
+    animation: pulseBorder 1.5s infinite alternate;
+}
+
+@keyframes pulseBorder {
+    from { box-shadow: 0 0 8px rgba(245, 158, 11, 0.2); }
+    to { box-shadow: 0 0 20px rgba(245, 158, 11, 0.5); }
+}
+
+.vocab-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.vocab-card-title-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.vocab-card-icon {
+    font-size: 26px;
+    line-height: 1;
+}
+
+.vocab-card-term {
+    font-size: 17px;
+    font-weight: 800;
+    color: #0f172a;
+    margin: 0;
+}
+
+.vocab-card-category-badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-top: 3px;
+}
+
+.cat-ano1 {
+    background: #dbeafe;
+    color: #1e40af;
+}
+
+.cat-ano2 {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.cat-ano3 {
+    background: #f3e8ff;
+    color: #6b21a8;
+}
+
+/* Caixas Informativas dentro do Cartão */
+.vocab-section-box {
+    border-radius: 8px;
+    padding: 10px 12px;
+}
+
+.vocab-section-label {
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    margin-bottom: 4px;
+}
+
+.vocab-section-text {
+    font-size: 13px;
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* 1. Definição Simples (Letramento) */
+.def-box {
+    background: #f8fafc;
+    border-left: 4px solid #2563eb;
+}
+
+.def-box .vocab-section-label {
+    color: #1d4ed8;
+}
+
+.def-box .vocab-section-text {
+    color: #1e293b;
+    font-weight: 500;
+}
+
+/* 2. Exemplo Prático */
+.example-box {
+    background: #f0fdf4;
+    border-left: 4px solid #16a34a;
+}
+
+.example-box .vocab-section-label {
+    color: #15803d;
+}
+
+.example-box .vocab-section-text {
+    color: #14532d;
+}
+
+/* 3. Mito Desmentido */
+.myth-box {
+    background: #fef2f2;
+    border-left: 4px solid #ef4444;
+}
+
+.myth-box .vocab-section-label {
+    color: #b91c1c;
+}
+
+.myth-box .vocab-section-text {
+    color: #7f1d1d;
+}
+
+/* Tags */
+.vocab-tags-row {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-top: 2px;
+}
+
+.vocab-tag-pill {
+    background: #f1f5f9;
+    color: #64748b;
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-size: 10px;
+    font-weight: 600;
+}
+
+/* Estado Vazio */
+.vocab-empty-card {
+    grid-column: 1 / -1;
+    text-align: center;
+    background: #f8fafc;
+    border: 2px dashed #cbd5e1;
+    border-radius: 12px;
+    padding: 30px 20px;
+    color: #64748b;
+}
+
+.vocab-empty-card h3 {
+    margin: 10px 0 6px 0;
+    color: #1e293b;
+}
+
+
